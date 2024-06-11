@@ -1,15 +1,15 @@
 
 
-minetest.register_craftitem("rangedweapons:pin", {
+minetest.register_craftitem("mcl_rangedweapons:pin", {
 	wield_scale = {x=2.5,y=2.5,z=1.0},
-	inventory_image = "rangedweapons_pin.png",
+	inventory_image = "mcl_rangedweapons_pin.png",
 })
 local rangedweapons_grenade_pin = {
 	physical = false,
 	timer = 0,
 	visual = "wielditem",
 	visual_size = {x=0.15, y=0.15},
-	textures = {"rangedweapons:pin"},
+	textures = {"mcl_rangedweapons:pin"},
 	lastpos= {},
 	collisionbox = {0, 0, 0, 0, 0, 0},
 }
@@ -20,7 +20,7 @@ rangedweapons_grenade_pin.on_step = function(self, dtime, pos)
 	if self.lastpos.x ~= nil then
 		if minetest.registered_nodes[node.name].walkable then
 		self.object:remove()
-			minetest.sound_play("rangedweapons_bulletdrop", {pos = self.lastpos, gain = 0.8})
+			minetest.sound_play("mcl_rangedweapons_bulletdrop", {pos = self.lastpos, gain = 0.8})
 			end
 	end
 	self.lastpos= {x = pos.x, y = pos.y, z = pos.z}
@@ -28,31 +28,31 @@ end
 
 
 
-minetest.register_entity("rangedweapons:grenade_pin", rangedweapons_grenade_pin)
+minetest.register_entity("mcl_rangedweapons:grenade_pin", rangedweapons_grenade_pin)
 
 function grenade_boom (self)
 	mcl_explosions.explode(self.object:get_pos(), 3, {drop_chance=1.0}, self.object)
 end
 	local gtimer = 0
-minetest.register_craftitem("rangedweapons:hand_grenade", {
+minetest.register_craftitem("mcl_rangedweapons:hand_grenade", {
 	stack_max= 1,
 	wield_scale = {x=1.1,y=1.1,z=1.05},
 		description = "" ..core.colorize("#35cdff","Hand grenade\n") ..core.colorize("#FFFFFF", "Explosion radius: 3\n")..core.colorize("#FFFFFF", "Throw force: 12\n")  ..core.colorize("#FFFFFF", "Grenade gravitational pull: 6\n") ..core.colorize("#ffc000", "Right-click to unpin, Left click to throw after unpinning\n") ..core.colorize("#ffc000", "Thrown or not, it will explode after 3 secons from unpinning, be careful!"),
 	range = 0,
-	inventory_image = "rangedweapons_hand_grenade.png",
+	inventory_image = "mcl_rangedweapons_hand_grenade.png",
 	on_secondary_use = function(itemstack, user, pointed_thing)
-if minetest.find_node_near(user:get_pos(), 10,"rangedweapons:antigun_block")
+if minetest.find_node_near(user:get_pos(), 10,"mcl_rangedweapons:antigun_block")
 then
     minetest.chat_send_player(user:get_player_name(), "" ..core.colorize("#ff0000","Grenades are prohibited in this area!"))
 			return itemstack
 		end
 
 		gtimer = 0
-	minetest.sound_play("rangedweapons_reload_a", {pos = user:get_pos()})
-		itemstack = "rangedweapons:hand_grenade_nopin"
+	minetest.sound_play("mcl_rangedweapons_reload_a", {pos = user:get_pos()})
+		itemstack = "mcl_rangedweapons:hand_grenade_nopin"
 local pos = user:get_pos()
 pos.y = pos.y + 1.5
-local pinEnt = minetest.add_entity(pos, "rangedweapons:grenade_pin")
+local pinEnt = minetest.add_entity(pos, "mcl_rangedweapons:grenade_pin")
 if pinEnt then
 local dir = user:get_look_dir()
 local yaw = user:get_look_horizontal()
@@ -65,12 +65,12 @@ end
 })
 
 
-minetest.register_craftitem("rangedweapons:hand_grenade_nopin", {
+minetest.register_craftitem("mcl_rangedweapons:hand_grenade_nopin", {
 	stack_max= 1,
 	wield_scale = {x=1.1,y=1.1,z=1.05},
 	description = "***HURRY UP AND THROW IT!!!***",
 	range = 0,
-	inventory_image = "rangedweapons_hand_grenade_nopin.png",
+	inventory_image = "mcl_rangedweapons_hand_grenade_nopin.png",
 	groups = {not_in_creative_inventory = 1},
 
 	on_use = function(itemstack, user, pointed_thing)
@@ -79,7 +79,7 @@ minetest.register_craftitem("rangedweapons:hand_grenade_nopin", {
 		local yaw = user:get_look_horizontal()
 		if pos and dir and yaw then
 			pos.y = pos.y + 1.6
-			local obj = minetest.add_entity(pos, "rangedweapons:grenade")
+			local obj = minetest.add_entity(pos, "mcl_rangedweapons:grenade")
 			if obj then
 				obj:set_velocity({x=dir.x * 12, y=dir.y * 12, z=dir.z * 12})
 				obj:set_acceleration({x=0, y=-6, z=0})
@@ -103,7 +103,7 @@ minetest.register_globalstep(function(dtime, player, pos)
 	if gtimer >= 3.0 then
 	for _, player in pairs(minetest.get_connected_players()) do
 	local pos = player:get_pos()
-		if player:get_wielded_item():get_name() == "rangedweapons:hand_grenade_nopin" then
+		if player:get_wielded_item():get_name() == "mcl_rangedweapons:hand_grenade_nopin" then
 		player:set_wielded_item("")
 		gtimer = 0
 		grenade_boom(player)
@@ -116,7 +116,7 @@ local rangedweapons_grenade = {
 	hp_max = 420,
 	visual = "sprite",
 	visual_size = {x=0.5, y=0.5},
-	textures = {"rangedweapons_hand_grenade_nopin.png"},
+	textures = {"mcl_rangedweapons_hand_grenade_nopin.png"},
 	lastpos= {},
 	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
 }
@@ -135,6 +135,6 @@ end
 
 
 
-minetest.register_entity("rangedweapons:grenade", rangedweapons_grenade)
+minetest.register_entity("mcl_rangedweapons:grenade", rangedweapons_grenade)
 
 

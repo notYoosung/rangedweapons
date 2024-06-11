@@ -1,23 +1,23 @@
 local proj_dir
 
-minetest.register_tool("rangedweapons:forcegun", {
+minetest.register_tool("mcl_rangedweapons:forcegun", {
 		description = "" ..core.colorize("#35cdff","Force gun\n") ..core.colorize("#FFFFFF", "Completelly harmless... by itself...\n")..core.colorize("#FFFFFF", "It's projectile will push either the entity it hits directly, or everyone near the node it collides with far away.\n")  ..core.colorize("#FFFFFF", "Perfect for rocket-jumping or YEETing enemies away.\n")..core.colorize("#FFFFFF", "Power usage: 40\n")..core.colorize("#FFFFFF", "Gun type:Power Special-gun\n") ..core.colorize("#FFFFFF", "Bullet velocity: 60"),
 	range = 0,
 	wield_scale = {x=2.0,y=2.0,z=1.75},
-	inventory_image = "rangedweapons_forcegun.png",
+	inventory_image = "mcl_rangedweapons_forcegun.png",
 	on_use = function(itemstack, user, pointed_thing)
 
 		local pos = user:get_pos()
 		local dir = user:get_look_dir()
 		local yaw = user:get_look_horizontal()
 		local inv = user:get_inventory()
-if  inv:contains_item("main", "rangedweapons:power_particle 40") then
+if  inv:contains_item("main", "mcl_rangedweapons:power_particle 40") then
 		if pos and dir then
-		inv:remove_item("main", "rangedweapons:power_particle 25")
+		inv:remove_item("main", "mcl_rangedweapons:power_particle 25")
 			pos.y = pos.y + 1.5
-			local obj = minetest.add_entity(pos, "rangedweapons:forceblast")
+			local obj = minetest.add_entity(pos, "mcl_rangedweapons:forceblast")
 			if obj then
-				minetest.sound_play("rangedweapons_rocket", {object=obj})
+				minetest.sound_play("mcl_rangedweapons_rocket", {object=obj})
 				obj:set_velocity({x=dir.x * 60, y=dir.y * 60, z=dir.z * 60})
 
 				obj:set_yaw(yaw - math.pi/2)
@@ -40,7 +40,7 @@ initial_properties = {
 	glow = 30,
 	visual = "sprite",
 	visual_size = {x=0.4, y=0.4,},
-	textures = {"rangedweapons_force_bullet.png"},
+	textures = {"mcl_rangedweapons_force_bullet.png"},
 	lastpos = {},
      collide_with_objects = false,
 	collisionbox = {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25},
@@ -81,7 +81,7 @@ end
 		collisiondetection = true,
 		collision_removal = false,
 		vertical = false,
-		texture = "rangedweapons_force_blast.png",
+		texture = "mcl_rangedweapons_force_blast.png",
 		glow = 20,
           animation = {type="vertical_frames", aspect_w=64, aspect_h=64, length = 0.20,},
 	})
@@ -114,7 +114,7 @@ posd_y = (posd_y + 0.5) * (((math.abs(posd_x)+0.5)+(math.abs(posd_z)+0.5))/2)
 if posd_y > -1.0 and posd_y < 0 then posd_y = -1.0 end
 
 			if obj:get_luaentity() ~= nil then
-				if obj:get_luaentity().name ~= "rangedweapons:forceblast" then
+				if obj:get_luaentity().name ~= "mcl_rangedweapons:forceblast" then
 	obj:add_velocity({x=10*(-posd_x), y=30*(-1/posd_y), z=10*(-posd_z)})
 		self.object:remove()
 end
@@ -134,7 +134,7 @@ end
 		collisiondetection = true,
 		collision_removal = false,
 		vertical = false,
-		texture = "rangedweapons_force_blast.png",
+		texture = "mcl_rangedweapons_force_blast.png",
 		glow = 20,
           animation = {type="vertical_frames", aspect_w=64, aspect_h=64, length = 0.20,},
 	})
@@ -147,4 +147,4 @@ end
 end	
 
 
-minetest.register_entity("rangedweapons:forceblast", rangedweapons_forceblast)
+minetest.register_entity("mcl_rangedweapons:forceblast", rangedweapons_forceblast)

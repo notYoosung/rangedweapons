@@ -15,7 +15,7 @@ local rangedweapons_rocket = {
 	timer = 0,
 	visual = "sprite",
 	visual_size = {x=0.0, y=0.0},
-	textures = {"rangedweapons_invisible.png"},
+	textures = {"mcl_rangedweapons_invisible.png"},
 	lastpos= {},
 	collisionbox = {0, 0, 0, 0, 0, 0},
 }
@@ -33,7 +33,7 @@ rangedweapons_rocket.on_step = function(self, dtime, pos)
 		size = 7,
 		collisiondetection = false,
 		vertical = false,
-		texture = "rangedweapons_rocket_fly.png",
+		texture = "mcl_rangedweapons_rocket_fly.png",
 		glow = 15,
 	})
 	minetest.add_particle({
@@ -53,7 +53,7 @@ rangedweapons_rocket.on_step = function(self, dtime, pos)
 	local objs = minetest.get_objects_inside_radius({x = pos.x, y = pos.y, z = pos.z}, 1.5)
 		for k, obj in pairs(objs) do
 		if obj:get_luaentity() ~= nil then
-		if obj:get_luaentity().name ~= "rangedweapons:rocket" and obj:get_luaentity().name ~= "__builtin:item" then
+		if obj:get_luaentity().name ~= "mcl_rangedweapons:rocket" and obj:get_luaentity().name ~= "__builtin:item" then
 		rocket_boom(self)
 		self.object:remove()
 			end
@@ -73,7 +73,7 @@ end
 	self.lastpos= {x = pos.x, y = pos.y, z = pos.z}
 end
 
-minetest.register_entity("rangedweapons:rocket", rangedweapons_rocket)
+minetest.register_entity("mcl_rangedweapons:rocket", rangedweapons_rocket)
 
 
 local rangedweapons_he_grenade = {
@@ -81,7 +81,7 @@ local rangedweapons_he_grenade = {
 	timer = 0,
 	visual = "sprite",
 	visual_size = {x=0.0, y=0.0},
-	textures = {"rangedweapons_invisible.png"},
+	textures = {"mcl_rangedweapons_invisible.png"},
 	lastpos= {},
 	collisionbox = {0, 0, 0, 0, 0, 0},
 }
@@ -99,7 +99,7 @@ rangedweapons_he_grenade.on_step = function(self, dtime, pos)
 		size = 7,
 		collisiondetection = false,
 		vertical = false,
-		texture = "rangedweapons_rocket_fly.png",
+		texture = "mcl_rangedweapons_rocket_fly.png",
 		glow = 15,
 	})
 	minetest.add_particle({
@@ -119,7 +119,7 @@ rangedweapons_he_grenade.on_step = function(self, dtime, pos)
 	local objs = minetest.get_objects_inside_radius({x = pos.x, y = pos.y, z = pos.z}, 1.5)
 		for k, obj in pairs(objs) do
 		if obj:get_luaentity() ~= nil then
-		if obj:get_luaentity().name ~= "rangedweapons:he_grenade" and obj:get_luaentity().name ~= "__builtin:item" then
+		if obj:get_luaentity().name ~= "mcl_rangedweapons:he_grenade" and obj:get_luaentity().name ~= "__builtin:item" then
 		rocket_boom(self)
 		self.object:remove()
 			end
@@ -139,19 +139,19 @@ end
 	self.lastpos= {x = pos.x, y = pos.y, z = pos.z}
 end
 
-minetest.register_entity("rangedweapons:he_grenade", rangedweapons_he_grenade)
+minetest.register_entity("mcl_rangedweapons:he_grenade", rangedweapons_he_grenade)
 
 
 
-minetest.register_node("rangedweapons:barrel", {
+minetest.register_node("mcl_rangedweapons:barrel", {
 		description = "" ..core.colorize("#35cdff","Explosive barrel\n")..core.colorize("#FFFFFF", "It will explode if shot by gun"),
 	tiles = {
-		"rangedweapons_barrel_top.png",
-		"rangedweapons_barrel_top.png",
-		"rangedweapons_barrel_side.png",
-		"rangedweapons_barrel_side.png",
-		"rangedweapons_barrel_side.png",
-		"rangedweapons_barrel_side.png"
+		"mcl_rangedweapons_barrel_top.png",
+		"mcl_rangedweapons_barrel_top.png",
+		"mcl_rangedweapons_barrel_side.png",
+		"mcl_rangedweapons_barrel_side.png",
+		"mcl_rangedweapons_barrel_side.png",
+		"mcl_rangedweapons_barrel_side.png"
 	},
 	drawtype = "nodebox",
 	paramtype = "light",

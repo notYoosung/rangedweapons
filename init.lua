@@ -11,7 +11,7 @@ if minetest.global_exists("armor") and armor.attributes then
 end
 
 --[[minetest.register_node(
-    "rangedweapons:antigun_block",
+    "mcl_rangedweapons:antigun_block",
     {
         description = "" ..
             core.colorize("#35cdff", "Anti-gun block\n") ..
@@ -19,7 +19,7 @@ end
                     "#FFFFFF",
                     "Prevents people from using guns, in 10 node radius to each side from this block"
                 ),
-        tiles = {"rangedweapons_antigun_block.png"},
+        tiles = {"mcl_rangedweapons_antigun_block.png"},
         groups = {choppy = 3, oddly_breakable_by_hand = 3},
         sounds = default.node_sound_wood_defaults()
     }
@@ -44,14 +44,14 @@ make_sparks = function(pos)
                 size = math.random(1, 2),
                 collisiondetection = true,
                 vertical = false,
-                texture = "rangedweapons_spark.png",
+                texture = "mcl_rangedweapons_spark.png",
                 glow = 25
             }
         )
     end
 end
 
-local max_gun_efficiency = tonumber(minetest.settings:get("rangedweapons_max_gun_efficiency")) or 300
+local max_gun_efficiency = tonumber(minetest.settings:get("mcl_rangedweapons_max_gun_efficiency")) or 300
 
 rangedweapons_gain_skill = function(player, skill, chance)
     if math.random(1, chance) == 1 then
@@ -119,7 +119,7 @@ rangedweapons_reload_gun = function(itemstack, player)
         local ammoName = gunMeta:get_string("RW_ammo_name")
         local inv = player:get_inventory()
 
-        if minetest.settings:get_bool("rangedweapons_infinite_ammo", false) then
+        if minetest.settings:get_bool("mcl_rangedweapons_infinite_ammo", false) then
             gunMeta:set_int("RW_bullets", clipSize)
         else
             inv:add_item("main", ammoName .. " " .. ammoCount)
@@ -143,7 +143,7 @@ rangedweapons_reload_gun = function(itemstack, player)
             local yaw = player:get_look_horizontal()
             if pos and dir and yaw then
                 pos.y = pos.y + 1.4
-                local obj = minetest.add_entity(pos, "rangedweapons:mag")
+                local obj = minetest.add_entity(pos, "mcl_rangedweapons:mag")
                 if obj then
                     obj:set_properties({textures = {GunCaps.gun_magazine}})
                     obj:set_velocity({x = dir.x * 2, y = dir.y * 2, z = dir.z * 2})
@@ -216,7 +216,7 @@ rangedweapons_single_load_gun = function(itemstack, player)
         end
 
         if inv:contains_item("main", reload_ammo:get_name()) and gunMeta:get_int("RW_bullets") < clipSize then
-            if not minetest.settings:get_bool("rangedweapons_infinite_ammo", false) then
+            if not minetest.settings:get_bool("mcl_rangedweapons_infinite_ammo", false) then
                 inv:remove_item("main", reload_ammo:get_name())
             end
             gunMeta:set_int("RW_bullets", gunMeta:get_int("RW_bullets") + 1)
@@ -233,7 +233,7 @@ rangedweapons_single_load_gun = function(itemstack, player)
 end
 
 rangedweapons_yeet = function(itemstack, player)
-    --[[if minetest.find_node_near(player:get_pos(), 10, "rangedweapons:antigun_block") then
+    --[[if minetest.find_node_near(player:get_pos(), 10, "mcl_rangedweapons:antigun_block") then
         minetest.chat_send_player(
             player:get_player_name(),
             "" .. core.colorize("#ff0000", "throwable weapons are prohibited in this area!")
@@ -251,7 +251,7 @@ rangedweapons_yeet = function(itemstack, player)
             playerMeta:set_float("rw_cooldown", throw_cooldown)
 
             local throw_damage = {fleshy = 1}
-            local throw_sound = "rangedweapons_throw"
+            local throw_sound = "mcl_rangedweapons_throw"
             local throw_velocity = 20
             local throw_accuracy = 100
             local throw_cooling = 0
@@ -265,9 +265,9 @@ rangedweapons_yeet = function(itemstack, player)
             local throw_skill = ""
             local throw_skillChance = 0
             local throw_smokeSize = 0
-            local throw_ent = "rangedweapons:shot_bullet"
+            local throw_ent = "mcl_rangedweapons:shot_bullet"
             local throw_visual = "wielditem"
-            local throw_texture = "rangedweapons:shot_bullet_visual"
+            local throw_texture = "mcl_rangedweapons:shot_bullet_visual"
             local throw_glass_breaking = 0
             local throw_particles = {}
             local throw_sparks = 0
@@ -279,7 +279,7 @@ rangedweapons_yeet = function(itemstack, player)
 
             if ThrowCaps ~= nil then
                 throw_damage = ThrowCaps.throw_damage or {fleshy = 1}
-                throw_sound = ThrowCaps.throw_sound or "rangedweapons_glock"
+                throw_sound = ThrowCaps.throw_sound or "mcl_rangedweapons_glock"
                 throw_velocity = ThrowCaps.throw_velocity or 20
                 throw_accuracy = ThrowCaps.throw_accuracy or 100
                 throw_cooling = ThrowCaps.throw_cooling or itemstack:get_name()
@@ -291,9 +291,9 @@ rangedweapons_yeet = function(itemstack, player)
                 throw_dps = ThrowCaps.throw_dps or 0
                 throw_gravity = ThrowCaps.throw_gravity or 0
                 throw_door_breaking = ThrowCaps.throw_door_breaking or 0
-                throw_ent = ThrowCaps.throw_entity or "rangedweapons:shot_bullet"
+                throw_ent = ThrowCaps.throw_entity or "mcl_rangedweapons:shot_bullet"
                 throw_visual = ThrowCaps.throw_visual or "wielditem"
-                throw_texture = ThrowCaps.throw_texture or "rangedweapons:shot_bullet_visual"
+                throw_texture = ThrowCaps.throw_texture or "mcl_rangedweapons:shot_bullet_visual"
                 throw_glass_breaking = ThrowCaps.throw_glass_breaking or 0
                 throw_particles = ThrowCaps.throw_particles or nil
                 throw_sparks = ThrowCaps.throw_sparks or 0
@@ -360,8 +360,8 @@ rangedweapons_yeet = function(itemstack, player)
 end
 
 rangedweapons_shoot_gun = function(itemstack, player)
-    --[[if minetest.find_node_near(player:get_pos(), 10, "rangedweapons:antigun_block") then
-        minetest.sound_play("rangedweapons_empty", {pos = player:get_pos()})
+    --[[if minetest.find_node_near(player:get_pos(), 10, "mcl_rangedweapons:antigun_block") then
+        minetest.sound_play("mcl_rangedweapons_empty", {pos = player:get_pos()})
         minetest.chat_send_player(
             player:get_player_name(),
             "" .. core.colorize("#ff0000", "Guns are prohibited in this area!")
@@ -395,7 +395,7 @@ rangedweapons_shoot_gun = function(itemstack, player)
             local AmmoCaps = bulletStack:get_definition().RW_ammo_capabilities
 
             local gun_damage = {fleshy = 1}
-            local gun_sound = "rangedweapons_glock"
+            local gun_sound = "mcl_rangedweapons_glock"
             local gun_velocity = 20
             local gun_accuracy = 100
             local gun_cooling = 0
@@ -415,17 +415,17 @@ rangedweapons_shoot_gun = function(itemstack, player)
 
             local bullet_damage = {fleshy = 0}
             local bullet_velocity = 0
-            local bullet_ent = "rangedweapons:shot_bullet"
+            local bullet_ent = "mcl_rangedweapons:shot_bullet"
             local bullet_visual = "wielditem"
-            local bullet_texture = "rangedweapons:shot_bullet_visual"
+            local bullet_texture = "mcl_rangedweapons:shot_bullet_visual"
             local bullet_crit = 0
             local bullet_critEffc = 0
             local bullet_projMult = 1
             local bullet_mobPen = 0
             local bullet_nodePen = 0
-            local bullet_shell_ent = "rangedweapons:empty_shell"
+            local bullet_shell_ent = "mcl_rangedweapons:empty_shell"
             local bullet_shell_visual = "wielditem"
-            local bullet_shell_texture = "rangedweapons:shelldrop"
+            local bullet_shell_texture = "mcl_rangedweapons:shelldrop"
             local bullet_dps = 0
             local bullet_gravity = 0
             local bullet_glass_breaking = 0
@@ -437,7 +437,7 @@ rangedweapons_shoot_gun = function(itemstack, player)
 
             if GunCaps ~= nil then
                 gun_damage = GunCaps.gun_damage or {fleshy = 1}
-                gun_sound = GunCaps.gun_sound or "rangedweapons_glock"
+                gun_sound = GunCaps.gun_sound or "mcl_rangedweapons_glock"
                 gun_velocity = GunCaps.gun_velocity or 20
                 gun_accuracy = GunCaps.gun_accuracy or 100
                 gun_cooling = GunCaps.gun_cooling or itemstack:get_name()
@@ -472,17 +472,17 @@ rangedweapons_shoot_gun = function(itemstack, player)
                     end
                 bullet_damage = AmmoCaps.ammo_damage or {fleshy = 1}
                 bullet_velocity = AmmoCaps.ammo_velocity or 0
-                bullet_ent = AmmoCaps.ammo_entity or "rangedweapons:shot_bullet"
+                bullet_ent = AmmoCaps.ammo_entity or "mcl_rangedweapons:shot_bullet"
                 bullet_visual = AmmoCaps.ammo_visual or "wielditem"
-                bullet_texture = AmmoCaps.ammo_texture or "rangedweapons:shot_bullet_visual"
+                bullet_texture = AmmoCaps.ammo_texture or "mcl_rangedweapons:shot_bullet_visual"
                 bullet_crit = AmmoCaps.ammo_crit or 0
                 bullet_critEffc = AmmoCaps.ammo_critEffc or 0
                 bullet_projMult = AmmoCaps.ammo_projectile_multiplier or 1
                 bullet_mobPen = AmmoCaps.ammo_mob_penetration or 0
                 bullet_nodePen = AmmoCaps.ammo_node_penetration or 0
-                bullet_shell_ent = AmmoCaps.shell_entity or "rangedweapons:empty_shell"
+                bullet_shell_ent = AmmoCaps.shell_entity or "mcl_rangedweapons:empty_shell"
                 bullet_shell_visual = AmmoCaps.shell_visual or "wielditem"
-                bullet_shell_texture = AmmoCaps.shell_texture or "rangedweapons:shelldrop"
+                bullet_shell_texture = AmmoCaps.shell_texture or "mcl_rangedweapons:shelldrop"
                 bullet_dps = AmmoCaps.ammo_dps or 0
                 bullet_gravity = AmmoCaps.ammo_gravity or 0
                 bullet_glass_breaking = AmmoCaps.ammo_glass_breaking or 0
@@ -556,7 +556,7 @@ rangedweapons_shoot_gun = function(itemstack, player)
                 bullet_glow
             )
 
-            if minetest.settings:get_bool("rangedweapons_gun_wear", true) then
+            if minetest.settings:get_bool("mcl_rangedweapons_gun_wear", true) then
                 itemstack:add_wear(65535 / gun_durability)
             end
             itemstack:set_name(gun_cooling)
@@ -565,8 +565,8 @@ rangedweapons_shoot_gun = function(itemstack, player)
 end
 
 rangedweapons_shoot_powergun = function(itemstack, player)
-    if minetest.find_node_near(player:get_pos(), 10, "rangedweapons:antigun_block") then
-        minetest.sound_play("rangedweapons_empty", {pos = player:get_pos()})
+    if minetest.find_node_near(player:get_pos(), 10, "mcl_rangedweapons:antigun_block") then
+        minetest.sound_play("mcl_rangedweapons_empty", {pos = player:get_pos()})
         minetest.chat_send_player(
             player:get_player_name(),
             "" .. core.colorize("#ff0000", "Guns are prohibited in this area!")
@@ -585,7 +585,7 @@ rangedweapons_shoot_powergun = function(itemstack, player)
         local playerMeta = player:get_meta()
 
         if
-            inv:contains_item("main", "rangedweapons:power_particle " .. PowerCaps.power_consumption) and
+            inv:contains_item("main", "mcl_rangedweapons:power_particle " .. PowerCaps.power_consumption) and
                 playerMeta:get_float("rw_cooldown") <= 0
          then
             playerMeta:set_float("rw_cooldown", power_cooldown)
@@ -594,7 +594,7 @@ rangedweapons_shoot_powergun = function(itemstack, player)
             end
 
             local power_damage = {fleshy = 1}
-            local power_sound = "rangedweapons_laser"
+            local power_sound = "mcl_rangedweapons_laser"
             local power_velocity = 20
             local power_accuracy = 100
             local power_cooling = 0
@@ -608,9 +608,9 @@ rangedweapons_shoot_powergun = function(itemstack, player)
             local power_door_breaking = 0
             local power_skill = ""
             local power_skillChance = 0
-            local power_ent = "rangedweapons:shot_bullet"
+            local power_ent = "mcl_rangedweapons:shot_bullet"
             local power_visual = "wielditem"
-            local power_texture = "rangedweapons:shot_bullet_visual"
+            local power_texture = "mcl_rangedweapons:shot_bullet_visual"
             local power_glass_breaking = 0
             local power_particles = {}
             local power_sparks = 0
@@ -621,7 +621,7 @@ rangedweapons_shoot_powergun = function(itemstack, player)
 
             if PowerCaps ~= nil then
                 power_damage = PowerCaps.power_damage or {fleshy = 1}
-                power_sound = PowerCaps.power_sound or "rangedweapons_glock"
+                power_sound = PowerCaps.power_sound or "mcl_rangedweapons_glock"
                 power_velocity = PowerCaps.power_velocity or 20
                 power_accuracy = PowerCaps.power_accuracy or 100
                 power_cooling = PowerCaps.power_cooling or itemstack:get_name()
@@ -636,9 +636,9 @@ rangedweapons_shoot_powergun = function(itemstack, player)
                 power_door_breaking = PowerCaps.power_door_breaking or 0
                 OnCollision = PowerCaps.OnCollision or function()
                     end
-                power_ent = PowerCaps.power_entity or "rangedweapons:shot_bullet"
+                power_ent = PowerCaps.power_entity or "mcl_rangedweapons:shot_bullet"
                 power_visual = PowerCaps.power_visual or "wielditem"
-                power_texture = PowerCaps.power_texture or "rangedweapons:shot_bullet_visual"
+                power_texture = PowerCaps.power_texture or "mcl_rangedweapons:shot_bullet_visual"
                 power_glass_breaking = PowerCaps.power_glass_breaking or 0
                 power_particles = PowerCaps.power_particles or nil
                 power_sparks = PowerCaps.has_sparks or 0
@@ -697,12 +697,12 @@ rangedweapons_shoot_powergun = function(itemstack, player)
                 power_glow
             )
 
-            if minetest.settings:get_bool("rangedweapons_gun_wear", true) then
+            if minetest.settings:get_bool("mcl_rangedweapons_gun_wear", true) then
                 itemstack:add_wear(65535 / power_durability)
             end
             itemstack:set_name(power_cooling)
 
-            inv:remove_item("main", "rangedweapons:power_particle " .. PowerCaps.power_consumption)
+            inv:remove_item("main", "mcl_rangedweapons:power_particle " .. PowerCaps.power_consumption)
         end
     end
 end
@@ -750,7 +750,7 @@ rangedweapons_launch_projectile = function(
         minetest.sound_play(shoot_sound, {pos = pos, max_hear_distance = 500})
         pos.y = pos.y + 1.45
 
-        if has_shell > 0 and minetest.settings:get_bool("rangedweapons_animate_empty_shells", true) then
+        if has_shell > 0 and minetest.settings:get_bool("mcl_rangedweapons_animate_empty_shells", true) then
             local shl = minetest.add_entity(pos, shellEnt)
             shl:set_velocity({x = dir.x * -10, y = dir.y * -10, z = dir.z * -10})
             shl:set_acceleration({x = dir.x * -5, y = -10, z = dir.z * -5})
@@ -844,16 +844,16 @@ eject_shell = function(itemstack, player, rld_item, rld_time, rldsound, shell)
     local yaw = player:get_look_horizontal()
     if pos and dir and yaw then
         pos.y = pos.y + 1.6
-        local obj = minetest.add_entity(pos, "rangedweapons:empty_shell")
+        local obj = minetest.add_entity(pos, "mcl_rangedweapons:empty_shell")
 
         if bulletStack ~= "" then
             local AmmoCaps = bulletStack:get_definition().RW_ammo_capabilities
 
             local bullet_shell_visual = "wielditem"
-            local bullet_shell_texture = "rangedweapons:shelldrop"
+            local bullet_shell_texture = "mcl_rangedweapons:shelldrop"
 
             bullet_shell_visual = AmmoCaps.shell_visual or "wielditem"
-            bullet_shell_texture = AmmoCaps.shell_texture or "rangedweapons:shelldrop"
+            bullet_shell_texture = AmmoCaps.shell_texture or "mcl_rangedweapons:shelldrop"
 
             obj:set_properties({textures = {bullet_shell_texture}})
             obj:set_properties({visual = bullet_shell_visual})
@@ -874,11 +874,11 @@ dofile(modpath .. "/bullet_knockback.lua")
 dofile(modpath .. "/ammo.lua")
 dofile(modpath .. "/crafting.lua")
 
-if minetest.settings:get_bool("rangedweapons_shurikens", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_shurikens", true) then
     dofile(modpath .. "/shurikens.lua")
 end
 
-if minetest.settings:get_bool("rangedweapons_handguns", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_handguns", true) then
     dofile(modpath .. "/makarov.lua")
     dofile(modpath .. "/luger.lua")
     dofile(modpath .. "/beretta.lua")
@@ -891,60 +891,60 @@ if minetest.settings:get_bool("rangedweapon_forceguns", true) then
     dofile(modpath .. "/forcegun.lua")
 end
 
-if minetest.settings:get_bool("rangedweapons_javelins", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_javelins", true) then
     dofile(modpath .. "/javelin.lua")
 end
 
-if minetest.settings:get_bool("rangedweapons_power_weapons", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_power_weapons", true) then
     dofile(modpath .. "/generator.lua")
     dofile(modpath .. "/laser_blaster.lua")
     dofile(modpath .. "/laser_rifle.lua")
     dofile(modpath .. "/laser_shotgun.lua")
 end
 
-if minetest.settings:get_bool("rangedweapons_machine_pistols", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_machine_pistols", true) then
     dofile(modpath .. "/tmp.lua")
     dofile(modpath .. "/tec9.lua")
     dofile(modpath .. "/uzi.lua")
     dofile(modpath .. "/kriss_sv.lua")
 end
-if minetest.settings:get_bool("rangedweapons_shotguns", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_shotguns", true) then
     dofile(modpath .. "/remington.lua")
     dofile(modpath .. "/spas12.lua")
     dofile(modpath .. "/benelli.lua")
 end
-if minetest.settings:get_bool("rangedweapons_auto_shotguns", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_auto_shotguns", true) then
     dofile(modpath .. "/jackhammer.lua")
     dofile(modpath .. "/aa12.lua")
 end
-if minetest.settings:get_bool("rangedweapons_smgs", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_smgs", true) then
     dofile(modpath .. "/mp5.lua")
     dofile(modpath .. "/ump.lua")
     dofile(modpath .. "/mp40.lua")
     dofile(modpath .. "/thompson.lua")
 end
-if minetest.settings:get_bool("rangedweapons_rifles", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_rifles", true) then
     dofile(modpath .. "/awp.lua")
     dofile(modpath .. "/svd.lua")
     dofile(modpath .. "/m200.lua")
 end
-if minetest.settings:get_bool("rangedweapons_heavy_machineguns", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_heavy_machineguns", true) then
     dofile(modpath .. "/m60.lua")
     dofile(modpath .. "/rpk.lua")
     dofile(modpath .. "/minigun.lua")
 end
-if minetest.settings:get_bool("rangedweapons_revolvers", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_revolvers", true) then
     dofile(modpath .. "/python.lua")
     dofile(modpath .. "/taurus.lua")
 end
-if minetest.settings:get_bool("rangedweapons_assault_rifles", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_assault_rifles", true) then
     dofile(modpath .. "/m16.lua")
     dofile(modpath .. "/g36.lua")
     dofile(modpath .. "/ak47.lua")
     dofile(modpath .. "/scar.lua")
 end
 
-if minetest.settings:get_bool("rangedweapons_explosives", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_explosives", true) then
     dofile(modpath .. "/explosives.lua")
     dofile(modpath .. "/m79.lua")
     dofile(modpath .. "/milkor.lua")
@@ -952,15 +952,15 @@ if minetest.settings:get_bool("rangedweapons_explosives", true) then
     dofile(modpath .. "/hand_grenade.lua")
 end
 
-if minetest.settings:get_bool("rangedweapons_glass_breaking", true) then
+if minetest.settings:get_bool("mcl_rangedweapons_glass_breaking", true) then
     dofile(modpath .. "/glass_breaking.lua")
 --[[ What is this good for?
 minetest.register_abm({
-	nodenames = {"rangedweapons:broken_glass"},
+	nodenames = {"mcl_rangedweapons:broken_glass"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node)
-		if minetest.get_node(pos).name == "rangedweapons:broken_glass" then
+		if minetest.get_node(pos).name == "mcl_rangedweapons:broken_glass" then
 			node.name = "default:glass"
 			minetest.set_node(pos, node)
 		end
@@ -975,7 +975,7 @@ local rangedweapons_empty_shell = {
     timer = 0,
     visual = "wielditem",
     visual_size = {x = 0.3, y = 0.3},
-    textures = {"rangedweapons:shelldrop"},
+    textures = {"mcl_rangedweapons:shelldrop"},
     lastpos = {},
     collisionbox = {0, 0, 0, 0, 0, 0}
 }
@@ -989,19 +989,19 @@ rangedweapons_empty_shell.on_step = function(self, dtime, pos)
                 local vel = self.object:get_velocity()
                 local acc = self.object:get_acceleration()
                 self.object:set_velocity({x = vel.x * -0.3, y = vel.y * -0.75, z = vel.z * -0.3})
-                minetest.sound_play("rangedweapons_shellhit", {pos = self.lastpos, gain = 0.8})
+                minetest.sound_play("mcl_rangedweapons_shellhit", {pos = self.lastpos, gain = 0.8})
                 self.object:set_acceleration({x = acc.x, y = acc.y, z = acc.z})
             end
         end
     end
     if self.timer > 1.69 then
-        minetest.sound_play("rangedweapons_bulletdrop", {pos = self.lastpos, gain = 0.8})
+        minetest.sound_play("mcl_rangedweapons_bulletdrop", {pos = self.lastpos, gain = 0.8})
         self.object:remove()
     end
     self.lastpos = {x = pos.x, y = pos.y, z = pos.z}
 end
 
-minetest.register_entity("rangedweapons:empty_shell", rangedweapons_empty_shell)
+minetest.register_entity("mcl_rangedweapons:empty_shell", rangedweapons_empty_shell)
 
 minetest.register_abm(
     {
@@ -1025,7 +1025,7 @@ minetest.register_on_joinplayer(
             player:hud_add(
             {
                 hud_elem_type = "image",
-                text = "rangedweapons_empty_icon.png",
+                text = "mcl_rangedweapons_empty_icon.png",
                 scale = {x = 2, y = 2},
                 position = {x = 0.5, y = 0.5},
                 offset = {x = 0, y = 0},
@@ -1038,7 +1038,7 @@ minetest.register_on_joinplayer(
                 hud_elem_type = "image",
                 position = {x = 0.5, y = 0.5},
                 scale = {x = -100, y = -100},
-                text = "rangedweapons_empty_icon.png"
+                text = "mcl_rangedweapons_empty_icon.png"
             }
         )
     end
@@ -1050,7 +1050,7 @@ minetest.register_globalstep(
         timer = timer + dtime
         if timer >= 1.0 then
             for _, player in pairs(minetest.get_connected_players()) do
-                player:hud_change(hit, "text", "rangedweapons_empty_icon.png")
+                player:hud_change(hit, "text", "mcl_rangedweapons_empty_icon.png")
                 timer = 0
             end
         end

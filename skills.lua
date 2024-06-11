@@ -52,7 +52,7 @@ local arifle = meta:get_int("arifle_skill")
 local revolver = meta:get_int("revolver_skill")
 local rifle = meta:get_int("rifle_skill")
 local throw = meta:get_int("throw_skill")
-		minetest.show_formspec(name, "rangedweapons:gunskills_form",
+		minetest.show_formspec(name, "mcl_rangedweapons:gunskills_form",
 "size[11,7]"..
 "label[0,0;Gun efficiency: increases damage, accuracy and crit chance.]"..
 "image[0,1;1,1;rangedweapons_handgun_img.png]"..

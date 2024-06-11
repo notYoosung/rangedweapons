@@ -31,7 +31,7 @@ nodemeta:set_string("infotext", "currently generated power:"..nodemeta:get_int("
 	on_construct = function(pos)
 		minetest.get_node_timer(pos):start(3)
 	end,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 

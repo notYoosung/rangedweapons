@@ -30,17 +30,9 @@ end
 
 minetest.register_entity("rangedweapons:grenade_pin", rangedweapons_grenade_pin)
 
-local grenade_boom = {
-	name = "rangedweapons:grenade_explosion",
-	--description = "DuN mInD mEh...",
-	radius = 3,
-	tiles = {
-		side = "rangedweapons_invisible.png",
-		top = "rangedweapons_invisible.png",
-		bottom = "rangedweapons_invisible.png",
-		burning = "rangedweapons_invisible.png"
-	},
-}
+function grenade_boom (self)
+	mcl_explosions.explode(self.object:get_pos(), 3, {drop_chance=1.0}, self.object)
+end
 	local gtimer = 0
 minetest.register_craftitem("rangedweapons:hand_grenade", {
 	stack_max= 1,
@@ -104,7 +96,6 @@ minetest.register_craftitem("rangedweapons:hand_grenade_nopin", {
 	end,
 })
 
-tnt.register_tnt(grenade_boom)
 
 
 minetest.register_globalstep(function(dtime, player, pos)
@@ -115,7 +106,7 @@ minetest.register_globalstep(function(dtime, player, pos)
 		if player:get_wielded_item():get_name() == "rangedweapons:hand_grenade_nopin" then
 		player:set_wielded_item("")
 		gtimer = 0
-		tnt.boom(pos, grenade_boom)
+		grenade_boom(player)
 		end end end end)
 
 local rangedweapons_grenade = {
@@ -135,7 +126,7 @@ rangedweapons_grenade.on_step = function(self, dtime, pos)
 	local btimer = btimer or 0
 	self.timer = self.timer + dtime
 	if self.timer > (3.0 - btimer) then
-	tnt.boom(pos, grenade_boom)
+	grenade_boom(self)
 	self.object:remove()
 	end
 	self.lastpos= {x = pos.x, y = pos.y, z = pos.z}

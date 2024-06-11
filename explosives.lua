@@ -1,28 +1,14 @@
-local he_boom = {
-	name = "rangedweapons:he_explosion",
-	--description = "DuN mInD mEh...",
-	radius = 2,
-	tiles = {
-		side = "rangedweapons_invisible.png",
-		top = "rangedweapons_invisible.png",
-		bottom = "rangedweapons_invisible.png",
-		burning = "rangedweapons_invisible.png"
-	},
-}
-tnt.register_tnt(he_boom)
+-- mcl_explosions.explode(self.object:get_pos(), 4, {drop_chance=1.0}, self.object)
 
-local rocket_boom = {
-	name = "rangedweapons:rocket_explosion",
-	--description = "DuN mInD mEh...",
-	radius = 3,
-	tiles = {
-		side = "rangedweapons_invisible.png",
-		top = "rangedweapons_invisible.png",
-		bottom = "rangedweapons_invisible.png",
-		burning = "rangedweapons_invisible.png"
-	},
-}
-tnt.register_tnt(rocket_boom)
+
+
+function he_boom (self)
+	mcl_explosions.explode(self.object:get_pos(), 2, {drop_chance=1.0}, self.object)
+end
+
+function rocket_boom (self)
+	mcl_explosions.explode(self.object:get_pos(), 3, {drop_chance=1.0}, self.object)
+end
 
 local rangedweapons_rocket = {
 	physical = false,
@@ -68,7 +54,7 @@ rangedweapons_rocket.on_step = function(self, dtime, pos)
 		for k, obj in pairs(objs) do
 		if obj:get_luaentity() ~= nil then
 		if obj:get_luaentity().name ~= "rangedweapons:rocket" and obj:get_luaentity().name ~= "__builtin:item" then
-		tnt.boom(pos, rocket_boom)
+		rocket_boom(self)
 		self.object:remove()
 			end
 		end
@@ -76,11 +62,11 @@ rangedweapons_rocket.on_step = function(self, dtime, pos)
 end
 	if self.lastpos.x ~= nil then
 		if minetest.registered_nodes[node.name].walkable then
-		tnt.boom(pos, rocket_boom)
+		rocket_boom(self)
 		self.object:remove()
 			end
 		if self.timer >= 7.5 then
-		tnt.boom(pos, rocket_boom)
+		rocket_boom(self)
 		self.object:remove()
 		end
 	end
@@ -134,7 +120,7 @@ rangedweapons_he_grenade.on_step = function(self, dtime, pos)
 		for k, obj in pairs(objs) do
 		if obj:get_luaentity() ~= nil then
 		if obj:get_luaentity().name ~= "rangedweapons:he_grenade" and obj:get_luaentity().name ~= "__builtin:item" then
-		tnt.boom(pos, rocket_boom)
+		rocket_boom(self)
 		self.object:remove()
 			end
 		end
@@ -142,11 +128,11 @@ rangedweapons_he_grenade.on_step = function(self, dtime, pos)
 end
 	if self.lastpos.x ~= nil then
 		if minetest.registered_nodes[node.name].walkable then
-		tnt.boom(pos, he_boom)
+		he_boom(self)
 		self.object:remove()
 			end
 		if self.timer >= 7.5 then
-		tnt.boom(pos, he_boom)
+		he_boom(self)
 		self.object:remove()
 		end
 	end
@@ -156,18 +142,6 @@ end
 minetest.register_entity("rangedweapons:he_grenade", rangedweapons_he_grenade)
 
 
-local barrel_boom = {
-	name = "rangedweapons:explosion",
-	--description = "DuN mInD mEh...",
-	radius = 3,
-	tiles = {
-		side = "rangedweapons_invisible.png",
-		top = "rangedweapons_invisible.png",
-		bottom = "rangedweapons_invisible.png",
-		burning = "rangedweapons_invisible.png"
-	},
-}
-tnt.register_tnt(barrel_boom)
 
 minetest.register_node("rangedweapons:barrel", {
 		description = "" ..core.colorize("#35cdff","Explosive barrel\n")..core.colorize("#FFFFFF", "It will explode if shot by gun"),
@@ -183,9 +157,9 @@ minetest.register_node("rangedweapons:barrel", {
 	paramtype = "light",
 	groups = {choppy = 3, oddly_breakable_by_hand = 3},
 	on_blast = function(pos)
-		tnt.boom(pos, {radius = 3})
+		mcl_explosions.explode(pos, 3, {drop_chance=1.0}, nil)
 	end,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	node_box = {
 		type = "fixed",
 		fixed = {
